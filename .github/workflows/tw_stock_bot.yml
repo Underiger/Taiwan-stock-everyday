@@ -1,0 +1,33 @@
+name: Taiwan Stock After-Hours Bot
+
+on:
+  schedule:
+    # 14:30 Taiwan Time (UTC+8) = 06:30 UTC, weekdays only
+    - cron: '30 6 * * 1-5'
+  workflow_dispatch:  # allow manual trigger from GitHub UI
+
+jobs:
+  send-report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Chinese font for chart
+        run: sudo apt-get install -y fonts-wqy-microhei
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Taiwan stock bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python bot.py
