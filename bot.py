@@ -132,7 +132,7 @@ def format_change(change: float, pct: float) -> str:
 def build_message(market: dict, stocks_data: dict[str, dict]) -> str:
     amount_yi = market["amount"] / 1e8
     lines = [
-        f"📊 *台股盤後焦點*  {datetime.now(TW_TZ).strftime('%Y/%m/%d')}",
+        f"📊 *台股盤後焦點*  {market['date']}",
         "",
         "🏦 *加權指數*",
         f"指數：`{market['index']:,.2f}`  {format_change(market['change'], market['pct'])}",
